@@ -1,0 +1,67 @@
+<h1>Xem đề thi</h1>
+<div class="row" style="margin-left: 5px;">
+    <div class="col-4">
+        <%for(var i = 0; i < listDeThi.length; i++){%>
+        <botton class="btn btn-primary" style="margin-left: 10px" onclick='viewDeThi("<%=listDeThi[i].maDe%>");'>
+            <span>- <%=listDeThi[i].maDe%></span>
+        </botton>
+        <%}%>
+    </div>
+    <div class="col-6" id="list_question">
+        
+
+    </div>
+</div>
+
+<%- contentFor('script') %>
+<script>
+    function viewDeThi(maDe) {
+        $.ajax({
+            url: '/xemDeThi',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "maDe": maDe
+            },
+            success: function (result) {
+                console.log(result);
+                var listQuestion = result[0].listQuestion;
+                var html = '';
+                html += `<h1>Mã đề: ${result[0].maDe}</h1>`;
+                for(var i = 0; i < listQuestion.length; i++) {
+                    var num = i +1;
+                    html += `<div class="form-group">`;
+                    html += `<label for="${listQuestion[i].question.id}">Câu hỏi ${num}</label>`;
+                    html += `<input type="text" class="form-control" id="${listQuestion[i].question.id}" value="${listQuestion[i].question.text}">`;
+                    html += '</div>';
+                    html += '<div class="form-row" style="margin-top: 5px;">';
+                    html += '<div class="col-sm-3 form-group">';
+                    html += `<label for="${listQuestion[i].A.id}">A:</label>`;
+                    html += `<input type="text" class="form-control" id="${listQuestion[i].A.id}" value="${listQuestion[i].A.text}">`;
+                    html += '</div>';
+                    html += '<div class="col-sm-3 form-group">';
+                    html += `<label for="${listQuestion[i].B.id}">B:</label>`;
+                    html += `<input type="text" class="form-control" id="${listQuestion[i].B.id}" value="${listQuestion[i].B.text}">`;
+                    html += '</div>';
+                    html += '<div class="col-sm-3 form-group">';
+                    html += `<label for="${listQuestion[i].C.id}">C:</label>`;
+                    html += `<input type="text" class="form-control" id="${listQuestion[i].C.id}" value="${listQuestion[i].C.text}">`;
+                    html += '</div>';
+                    html += '<div class="col-sm-3 form-group">';
+                    html += `<label for="${listQuestion[i].D.id}">D:</label>`;
+                    html += `<input type="text" class="form-control" id="${listQuestion[i].D.id}" value="${listQuestion[i].D.text}">`;
+                    html += '</div>';
+                    html += '<div class="col-sm-6 form-group">';
+                    html += `<label for="${listQuestion[i].Result.id}">Đáp án đúng: (A, B, C, D)</label>`;
+                    html += `<input type="text" class="form-control" id="${listQuestion[i].Result.id}" value="${listQuestion[i].Result.result}">`;
+                    html += '</div>';
+                    html += '</div>';
+                }
+                document.getElementById('list_question').innerHTML = html;
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }
+</script>

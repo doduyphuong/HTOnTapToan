@@ -1,0 +1,178 @@
+<h1>Thêm mới đề thi</h1>
+<div class="row" style="margin-left: 5px;">
+    <div class="col-6">
+        <form name="form1" action="" onsubmit="return false;">
+            <div class="form-group">
+                <label for="maDeThi">Mã Đề</label>
+                <input type="text" class="form-control" id="maDeThi" required>
+            </div>
+            <div id="listQuestion">
+                <div class="form-group">
+                    <label for="email">Câu hỏi 1</label>
+                    <input type="text" class="form-control" id="question1">
+                </div>
+                <div class="form-row" style="margin-top: 5px;">
+                    <div class="col-sm-3 form-group">
+                        <label for="q_1_0">A:</label>
+                        <input type="text" class="form-control" id="q_1_0">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label for="q_1_1">B:</label>
+                        <input type="text" class="form-control" id="q_1_1">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label for="q_1_2">C:</label>
+                        <input type="text" class="form-control" id="q_1_2">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                        <label for="q_1_3">D:</label>
+                        <input type="text" class="form-control" id="q_1_3">
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label for="q_1_result">Đáp án đúng: (A, B, C, D)</label>
+                        <input type="text" class="form-control" id="q_1_result">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success" onclick="createQuestion(); return false;">Thêm câu hỏi</button>
+            <button type="submit" class="btn btn-primary" onclick="createDeThi();">Submit</button>
+        </form>
+    </div>
+</div>
+<%- contentFor('script') %>
+<script>
+    var numberQuestion = 1;
+    var list = [];
+    function createQuestion() {
+        var listQuestion = document.getElementById('listQuestion').innerHTML;
+        numberQuestion += 1;
+        var html = '';
+        html += `<div class="form-group" id=question_${numberQuestion}>`;
+        html += `<label for="question${numberQuestion}">Câu hỏi ${numberQuestion}</label>`;
+        html += `<input type="text" class="form-control" id="question${numberQuestion}">`;
+        html += '</div>';
+        html += '<div class="form-row" style="margin-top: 5px;">';
+        html += '<div class="col-sm-3 form-group">';
+        html += `<label for="q_${numberQuestion}_0">A:</label>`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_0">`;
+        html += '</div>';
+        html += '<div class="col-sm-3 form-group">';
+        html += `<label for="q_${numberQuestion}_1">B:</label>`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_1">`;
+        html += '</div>';
+        html += '<div class="col-sm-3 form-group">';
+        html += `<label for="q_${numberQuestion}_2">C:</label>`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_2">`;
+        html += '</div>';
+        html += '<div class="col-sm-3 form-group">';
+        html += `<label for="q_${numberQuestion}_3">D:</label>`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_3">`;
+        html += '</div>';
+        html += '<div class="col-sm-6 form-group">';
+        html += `<label for="q_${numberQuestion}_result">Đáp án đúng: (A, B, C, D)</label>`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_result">`;
+        html += '</div>';
+        html += '</div>';
+        document.getElementById('listQuestion').innerHTML += html;
+    }
+
+    function createDeThi() {
+        if (numberQuestion > 0) {
+            var maDe = document.getElementById('maDeThi').value;
+            var objDeThi = {};
+            var listQuestion = [];
+            for (var i = 1; i <= numberQuestion; i++) {
+                let idQues = 'question' + i;
+                let idA = 'q_' + i + '_0';
+                let idB = 'q_' + i + '_1';
+                let idC = 'q_' + i + '_2';
+                let idD = 'q_' + i + '_3';
+                let idResult = 'q_' + i + '_result';
+                let question = document.getElementById(idQues).value;
+                let A = document.getElementById(idA).value;
+                let B = document.getElementById(idB).value;
+                let C = document.getElementById(idC).value;
+                let D = document.getElementById(idD).value;
+                let Result = document.getElementById(idResult).value;
+
+                let objecQuestion = {
+                    question: {
+                        id: idQues,
+                        text: question
+                    },
+                    A: {
+                        id: idA,
+                        text: A
+                    },
+                    B: {
+                        id: idB,
+                        text: B
+                    },
+                    C: {
+                        id: idC,
+                        text: C
+                    },
+                    D: {
+                        id: idD,
+                        text: D
+                    }
+                }
+
+                if (Result.toLowerCase() == 'a') {
+                    objecQuestion['Result'] = {
+                        id: idA,
+                        result : Result
+                    }
+                } else if (Result.toLowerCase() == 'b') {
+                    objecQuestion['Result'] = {
+                        id: idB,
+                        result : Result
+                    }
+                } else if (Result.toLowerCase() == 'c') {
+                    objecQuestion['Result'] = {
+                        id: idC,
+                        result : Result
+                    }
+                } else if (Result.toLowerCase() == 'd') {
+                    objecQuestion['Result'] = {
+                        id: idD,
+                        result : Result
+                    }
+                }
+
+                listQuestion.push(objecQuestion);
+            }
+
+            objDeThi = {
+                maDe,
+                numberQuestion,
+                listQuestion
+            };
+
+            $.ajax({
+                url: '/themDeThi',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "objDeThi": JSON.stringify(objDeThi)
+                },
+                success: function (result) {
+                    if(result.status == 200) {
+                        document.getElementById('listQuestion').innerHTML = '';
+                        document.getElementById('maDeThi').value = '';
+                    }
+                    alert(result.message);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+            console.log(objDeThi);
+        } else {
+            alert('Vui lòng thêm câu hỏi cho đề thi.');
+        }
+
+        return false;
+    }
+
+</script>

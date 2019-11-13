@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include head%>
+</head>
+<body>
+    <h1 style="text-align: center;">Ôn tập toán</h1>
+    <div style="margin-top: 5px; margin-bottom: 5px">
+        <a href="/" class="btn btn-secondary" style="margin-left: 10px">
+            <span>Trang Chủ</span>
+        </a>
+        <a href="/themDeThi" class="btn btn-secondary" style="margin-left: 10px">
+            <span>Thêm Đề Thi</span>
+        </a>
+        <a href="/xemDeThi" class="btn btn-secondary" style="margin-left: 10px">
+            <span>Xem Đề Thi</span>
+        </a>
+    </div>
+
+    <div style="margin-left: 10px;">
+        <%- body -%>
+    </div>
+    <% include footer%>
+    <%- script %>
+</body>
+</html>
