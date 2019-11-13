@@ -2,31 +2,37 @@
 <div class="row" style="margin-left: 5px;">
     <div class="col-6">
         <form name="form1" action="" onsubmit="return false;">
-            <div class="form-group">
-                <label for="maDeThi">Mã Đề</label>
-                <input type="text" class="form-control" id="maDeThi" required>
+            <div class="form-row form-group">
+                <div class="col-sm-7 form-group">
+                    <label for="maDeThi">Mã Đề:</label>
+                    <input type="text" class="form-control" id="maDeThi" required>
+                </div>
+                <div class="col-sm-5 form-group">
+                    <label for="timeStudy">Thời gian(Phút):</label>
+                    <input type="number" class="form-control" id="timeStudy" required>
+                </div>
             </div>
             <div id="listQuestion">
                 <div class="form-group">
-                    <label for="email">Câu hỏi 1</label>
-                    <input type="text" class="form-control" id="question1">
+                    <label for="email">Câu hỏi 1:</label>
+                    <input type="text" class="form-control" id="question1" required>
                 </div>
                 <div class="form-row" style="margin-top: 5px;">
                     <div class="col-sm-3 form-group">
                         <label for="q_1_0">A:</label>
-                        <input type="text" class="form-control" id="q_1_0">
+                        <input type="text" class="form-control" id="q_1_0" required>
                     </div>
                     <div class="col-sm-3 form-group">
                         <label for="q_1_1">B:</label>
-                        <input type="text" class="form-control" id="q_1_1">
+                        <input type="text" class="form-control" id="q_1_1" required>
                     </div>
                     <div class="col-sm-3 form-group">
                         <label for="q_1_2">C:</label>
-                        <input type="text" class="form-control" id="q_1_2">
+                        <input type="text" class="form-control" id="q_1_2" required>
                     </div>
                     <div class="col-sm-3 form-group">
                         <label for="q_1_3">D:</label>
-                        <input type="text" class="form-control" id="q_1_3">
+                        <input type="text" class="form-control" id="q_1_3" required>
                     </div>
                     <div class="col-sm-6 form-group">
                         <label for="q_1_result">Đáp án đúng: (A, B, C, D)</label>
@@ -48,29 +54,29 @@
         numberQuestion += 1;
         var html = '';
         html += `<div class="form-group" id=question_${numberQuestion}>`;
-        html += `<label for="question${numberQuestion}">Câu hỏi ${numberQuestion}</label>`;
-        html += `<input type="text" class="form-control" id="question${numberQuestion}">`;
+        html += `<label for="question${numberQuestion}">Câu hỏi ${numberQuestion}:</label>`;
+        html += `<input type="text" class="form-control" id="question${numberQuestion}" required>`;
         html += '</div>';
         html += '<div class="form-row" style="margin-top: 5px;">';
         html += '<div class="col-sm-3 form-group">';
         html += `<label for="q_${numberQuestion}_0">A:</label>`;
-        html += `<input type="text" class="form-control" id="q_${numberQuestion}_0">`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_0" required>`;
         html += '</div>';
         html += '<div class="col-sm-3 form-group">';
         html += `<label for="q_${numberQuestion}_1">B:</label>`;
-        html += `<input type="text" class="form-control" id="q_${numberQuestion}_1">`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_1" required>`;
         html += '</div>';
         html += '<div class="col-sm-3 form-group">';
         html += `<label for="q_${numberQuestion}_2">C:</label>`;
-        html += `<input type="text" class="form-control" id="q_${numberQuestion}_2">`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_2" required>`;
         html += '</div>';
         html += '<div class="col-sm-3 form-group">';
         html += `<label for="q_${numberQuestion}_3">D:</label>`;
-        html += `<input type="text" class="form-control" id="q_${numberQuestion}_3">`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_3" required>`;
         html += '</div>';
         html += '<div class="col-sm-6 form-group">';
         html += `<label for="q_${numberQuestion}_result">Đáp án đúng: (A, B, C, D)</label>`;
-        html += `<input type="text" class="form-control" id="q_${numberQuestion}_result">`;
+        html += `<input type="text" class="form-control" id="q_${numberQuestion}_result" required>`;
         html += '</div>';
         html += '</div>';
         document.getElementById('listQuestion').innerHTML += html;
@@ -79,6 +85,7 @@
     function createDeThi() {
         if (numberQuestion > 0) {
             var maDe = document.getElementById('maDeThi').value;
+            var timeStudy = document.getElementById('timeStudy').value;
             var objDeThi = {};
             var listQuestion = [];
             for (var i = 1; i <= numberQuestion; i++) {
@@ -88,55 +95,60 @@
                 let idC = 'q_' + i + '_2';
                 let idD = 'q_' + i + '_3';
                 let idResult = 'q_' + i + '_result';
-                let question = document.getElementById(idQues).value;
-                let A = document.getElementById(idA).value;
-                let B = document.getElementById(idB).value;
-                let C = document.getElementById(idC).value;
-                let D = document.getElementById(idD).value;
-                let Result = document.getElementById(idResult).value;
+                let question = document.getElementById(idQues).value.trim();
+                let cauA = document.getElementById(idA).value.trim();
+                let cauB = document.getElementById(idB).value.trim();
+                let cauC = document.getElementById(idC).value.trim();
+                let cauD = document.getElementById(idD).value.trim();
+                let Result = document.getElementById(idResult).value.trim();
+
+                if(question == '' || cauA == '' || cauB == '' || cauC == '' || cauD == '' || Result == '') {
+                    return true;
+                    break;
+                }
 
                 let objecQuestion = {
                     question: {
                         id: idQues,
                         text: question
                     },
-                    A: {
+                    cauA: {
                         id: idA,
-                        text: A
+                        text: cauA
                     },
-                    B: {
+                    cauB: {
                         id: idB,
-                        text: B
+                        text: cauB
                     },
-                    C: {
+                    cauC: {
                         id: idC,
-                        text: C
+                        text: cauC
                     },
-                    D: {
+                    cauD: {
                         id: idD,
-                        text: D
+                        text: cauD
                     }
                 }
 
                 if (Result.toLowerCase() == 'a') {
                     objecQuestion['Result'] = {
                         id: idA,
-                        result : Result
+                        result: Result
                     }
                 } else if (Result.toLowerCase() == 'b') {
                     objecQuestion['Result'] = {
                         id: idB,
-                        result : Result
+                        result: Result
                     }
                 } else if (Result.toLowerCase() == 'c') {
                     objecQuestion['Result'] = {
                         id: idC,
-                        result : Result
+                        result: Result
                     }
                 } else if (Result.toLowerCase() == 'd') {
                     objecQuestion['Result'] = {
                         id: idD,
-                        result : Result
+                        result: Result
                     }
                 }
 
@@ -145,6 +157,7 @@
 
             objDeThi = {
                 maDe,
+                timeStudy,
                 numberQuestion,
                 listQuestion
             };
@@ -157,7 +170,7 @@
                     "objDeThi": JSON.stringify(objDeThi)
                 },
                 success: function (result) {
-                    if(result.status == 200) {
+                    if (result.status == 200) {
                         document.getElementById('listQuestion').innerHTML = '';
                         document.getElementById('maDeThi').value = '';
                     }
@@ -167,7 +180,6 @@
                     console.log(err);
                 }
             });
-            console.log(objDeThi);
         } else {
             alert('Vui lòng thêm câu hỏi cho đề thi.');
         }

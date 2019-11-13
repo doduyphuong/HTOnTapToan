@@ -28,6 +28,7 @@
                 var listQuestion = result[0].listQuestion;
                 var html = '';
                 html += `<h1>Mã đề: ${result[0].maDe}</h1>`;
+                html += `<h1>Thời gian: ${result[0].timeStudy} Phút</h1>`;
                 for(var i = 0; i < listQuestion.length; i++) {
                     var num = i +1;
                     html += `<div class="form-group">`;
